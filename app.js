@@ -1,38 +1,67 @@
-//Variable para almacenar el número secreto
-let numeroSecreto = Math.floor(Math.random() * 100) + 1; 
-let numeroDeUsuario = 0;
-let intentos = 1;
-//let palabraveces = 'vez';
-let maxIntentos = 3;   
-console.log(numeroSecreto);
+let numeroSecreto = 0;
+let intentos = 0;
+let ListaNumerosSorteados = [];
+let NumeroMaximo = 10;
 
-while(numeroDeUsuario != numeroSecreto){
 
-    numeroDeUsuario =parseInt(prompt('Ingresa un numero del 1 al 100:'));
+function asignartextoelemento(elemento, texto) {
+  let elementoHTML = document.querySelector(elemento); 
+    elementoHTML.innerHTML = texto;
+return;
+}
+function verificarIntento() {
+    let numeroIngresado = parseInt(document.getElementById('ValorUsuario').value);
+    console.log(numeroIngresado === numeroSecreto);
+   if (numeroIngresado === numeroSecreto) {
+        asignartextoelemento('p', `¡Felicidades! Adivinaste el número en ${intentos} ${(intentos === 1)? 'vez' : 'veces'}.`);
+document.getElementById('reiniciar').removeAttribute('disabled')   ;
+           
+    } else  {
+       if (numeroIngresado < numeroSecreto) {
+        asignartextoelemento('p', 'El número secreto es mayor. Intenta de nuevo.');
+    } else {   
+        asignartextoelemento('p', 'El número secreto es menor. Intenta de nuevo.');
+    }
+ intentos++;
+reiniciarJuego(); 
 
-    console.log(typeof (numeroDeUsuario));
-      /* 
-     Es para realizar una comparación entre el número ingresado por el usuario y el número secreto.
-      */
-    if (numeroDeUsuario == numeroSecreto) {
-     //se cumplio la condición  
-     alert(`Felicidades, El numero es: ${numeroDeUsuario}. Lo hiciste en ${intentos} ${intentos == 1 ? 'vez' : 'veces'}.`); 
-    } else {
-       if(numeroDeUsuario > numeroSecreto){
-        alert('El numero secreto es menor.');
-    } else {
-        alert('El numero secreto es mayor.');
-      }
-     //incrementamos el número de intentos
-      //intentos = intentos + 1;
-     intentos++;
-     palabraveces = 'veces';
-      if (intentos > maxIntentos) {
-        alert(`Has superado el número de ${maxIntentos} intentos permitidos.`);
-        break;
-       } 
-      //no se cumplio la condición
-      // alert('¡Fallaste!');
-    } 
+}
+return;
 }
 
+function reiniciarJuego() {
+let ValorJuego = document.querySelector('#ValorUsuario').value = '';
+}
+ function generarNumeroSecreto() {
+    let NumeroGenerado = Math.floor(Math.random() * NumeroMaximo) + 1;
+    console.log(ListaNumerosSorteados);
+    if(ListaNumerosSorteados.length === NumeroMaximo) {
+asignartextoelemento('p', 'Todos los números han sido sorteados. Reinicia el juego para comenzar de nuevo.');
+    } else { 
+    if (ListaNumerosSorteados.includes(NumeroGenerado)) {
+ return generarNumeroSecreto();    
+
+} else {
+        ListaNumerosSorteados.push(NumeroGenerado);
+        return NumeroGenerado;
+}
+}
+}
+function CondicionesIniciales() {
+    asignartextoelemento('H1', 'Juego del Número Secreto');
+    asignartextoelemento('p', `Adivina el número entre 1 y ${NumeroMaximo}.`);
+    numeroSecreto = generarNumeroSecreto();
+    intentos = 1;
+
+}   
+
+function NuevoJuego() {
+  reiniciarJuego();
+  
+  CondicionesIniciales();
+    
+ document.querySelector('#reiniciar').setAttribute('disabled', true);
+
+
+}
+CondicionesIniciales();
